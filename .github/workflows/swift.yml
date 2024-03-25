@@ -17,6 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: sh build.sh
+      run: sh build_on_git.sh
     - name: Run tests
-      run: sh test.sh
+      run: sh test_on_git.sh
