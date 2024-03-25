@@ -31,7 +31,7 @@
 
     /// A Boolean value indicating whether the display link is currently running.
     public var isRunning: Bool {
-      guard let dl = displayLink else { return false }
+      if displayLink == nil { return false }
       return running
     }
 
