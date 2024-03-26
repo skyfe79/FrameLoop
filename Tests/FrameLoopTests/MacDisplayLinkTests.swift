@@ -39,7 +39,7 @@
       let expectation = self.expectation(description: "FrameUpdateCallback")
       var callbackFired = false
 
-      frameUpdater.onFrame = { fps, deltaTime in
+      frameUpdater.onFrameUpdate = { fps, deltaTime in
         XCTAssertGreaterThan(fps, 0, "Expected fps to be greater than 0")
         XCTAssertGreaterThan(deltaTime, 0, "Expected deltaTime to be greater than 0")
         callbackFired = true

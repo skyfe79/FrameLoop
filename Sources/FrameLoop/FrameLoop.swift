@@ -3,20 +3,20 @@ import Foundation
 import QuartzCore
 
 /// Defines a callback type for frame updates, providing frames per second and delta time.
-public typealias FrameCallback = (_ fps: Double, _ deltaTime: Double) -> Void
+public typealias FrameUpdateHandler = (_ fps: Double, _ deltaTime: Double) -> Void
 
 /// Manages the invocation of frame update callbacks.
 public final class FrameUpdater {
   /// The callback to be invoked on frame updates.
-  var onFrame: FrameCallback?
+  internal var onFrameUpdate: FrameUpdateHandler?
 
   /// Invokes the `onFrame` callback with the provided fps and deltaTime.
   @objc func update(fps: Double, deltaTime: Double) {
-    onFrame?(fps, deltaTime)
+    onFrameUpdate?(fps, deltaTime)
   }
 
   /// Initializes a new `FrameUpdater`.
-  init() {}
+  internal init() {}
 }
 
 /// Coordinates frame updates using a display link, allowing clients to register for frame update callbacks.
@@ -28,12 +28,12 @@ public final class FrameLoop {
   private var frameUpdater: FrameUpdater
 
   /// Registers or retrieves a frame update callback.
-  public var frameCallback: FrameCallback? {
+  public var onFrameUpdate: FrameUpdateHandler? {
     set {
-      frameUpdater.onFrame = newValue
+      frameUpdater.onFrameUpdate = newValue
     }
     get {
-      return frameUpdater.onFrame
+      return frameUpdater.onFrameUpdate
     }
   }
 
@@ -56,15 +56,15 @@ public final class FrameLoop {
   ///
   /// This initializer creates a new `FrameUpdater` instance and configures the underlying display link based on the current operating system.
   ///
-  /// - Parameter frameCallback: The callback to be invoked on frame updates.
-  public init(frameCallback: @escaping FrameCallback) {
+  /// - Parameter onFrameUpdate: The callback to be invoked on frame updates.
+  public init(onFrameUpdate: FrameUpdateHandler? = nil) {
     frameUpdater = FrameUpdater()
     #if os(macOS)
       displayLink = MacDisplayLink(frameUpdater: frameUpdater)
     #else
       displayLink = iOSDisplayLink(frameUpdater: frameUpdater)
     #endif
-    self.frameCallback = frameCallback
+    self.onFrameUpdate = onFrameUpdate
   }
 
   /// Starts the frame loop, causing it to begin issuing frame update callbacks.

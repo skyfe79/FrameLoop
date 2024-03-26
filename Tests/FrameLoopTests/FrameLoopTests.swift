@@ -8,7 +8,7 @@ final class FrameLoopTests: XCTestCase {
   override func setUp() {
     super.setUp()
     frameUpdater = FrameUpdater()
-    frameLoop = FrameLoop(frameCallback: frameUpdater.update)
+    frameLoop = FrameLoop()
   }
 
   override func tearDown() {
@@ -38,7 +38,7 @@ final class FrameLoopTests: XCTestCase {
     let expectation = self.expectation(description: "FrameUpdateCallback")
     var callbackFired = false
 
-    frameUpdater.onFrame = { fps, deltaTime in
+    frameLoop.onFrameUpdate = { fps, deltaTime in
       XCTAssertGreaterThan(fps, 0, "Expected fps to be greater than 0")
       XCTAssertGreaterThan(deltaTime, 0, "Expected deltaTime to be greater than 0")
       callbackFired = true
