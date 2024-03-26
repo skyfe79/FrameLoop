@@ -67,10 +67,20 @@ public final class FrameLoop {
     self.onFrameUpdate = onFrameUpdate
   }
 
+  #if os(macOS)
   /// Starts the frame loop, causing it to begin issuing frame update callbacks.
   public func start() {
     displayLink.start()
   }
+  #else
+  /// Starts the display link on the specified run loop and mode. If no run loop and mode are specified, it uses the main run loop and common mode by default.
+  /// - Parameters:
+  ///   - runLoop: The run loop on which to start the display link. Defaults to `RunLoop.main`.
+  ///   - mode: The mode for the run loop. Defaults to `.common`.
+  public func start(on runLoop: RunLoop = .main, mode: RunLoop.Mode = .common) {
+    displayLink.start(on: runLoop, mode: mode)
+  }
+  #endif
 
   /// Stops the frame loop, preventing any further frame update callbacks from being issued.
   public func stop() {

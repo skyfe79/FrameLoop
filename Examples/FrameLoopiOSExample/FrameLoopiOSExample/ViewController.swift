@@ -21,6 +21,8 @@ class ViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     frameLoop.start()
+    // or
+    // frameLoop.start(on: .main, mode: .common)
   }
   
   override func viewDidDisappear(_ animated: Bool) {

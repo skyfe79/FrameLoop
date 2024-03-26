@@ -59,13 +59,13 @@
     }
 
     /// Starts the display link if it is not already running.
-    public func start() {
+    public func start(on runLoop: RunLoop, mode: RunLoop.Mode) {
       guard !isRunning else { return }
       if displayLink == nil {
         setupDisplayLink()
       }
       running = true
-      displayLink?.add(to: .main, forMode: .common)
+      displayLink?.add(to: runLoop, forMode: mode)
     }
 
     /// Stops the display link and cleans up resources.

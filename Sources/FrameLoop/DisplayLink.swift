@@ -1,7 +1,13 @@
+import Foundation
+
 /// A protocol that defines the requirements for a display link, which synchronizes drawing to the refresh rate of the display.
 public protocol DisplayLink {
   /// Starts the display link.
+  #if os(macOS)
   func start()
+  #else
+  func start(on runLoop: RunLoop, mode: RunLoop.Mode)
+  #endif
   
   /// Stops the display link.
   func stop()
@@ -16,4 +22,3 @@ public protocol DisplayLink {
   /// - Parameter frameUpdater: The frame updater to be called with each screen refresh.
   init(frameUpdater: FrameUpdater)
 }
-

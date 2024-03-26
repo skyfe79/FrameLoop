@@ -1,4 +1,12 @@
+
+
 #if !os(macOS)
+  extension DisplayLink {
+    func start(on runLoop: RunLoop = RunLoop.main, mode: RunLoop.Mode = .common) {
+      start(on: runLoop, mode: mode)
+    }
+  }
+
   @testable import FrameLoop
   import XCTest
 
