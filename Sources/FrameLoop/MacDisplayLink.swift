@@ -83,6 +83,15 @@
     private func CVTimeStampToSeconds(_ timeStamp: UnsafePointer<CVTimeStamp>) -> CFTimeInterval {
       return CFTimeInterval(timeStamp.pointee.videoTime) / CFTimeInterval(timeStamp.pointee.videoTimeScale)
     }
+
+    /// Stops and releases the display link when the object is deinitialized.
+    deinit {
+      if let dl = displayLink {
+        CVDisplayLinkStop(dl)
+      }
+      // ARC will automatically release the display link when it is no longer referenced.
+      displayLink = nil
+    }
   }
 
 #endif

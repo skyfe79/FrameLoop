@@ -14,7 +14,7 @@ To integrate FrameLoop into your Swift package, add it as a dependency in your `
 
 ```swift:Package.swift
 dependencies: [
-    .package(url: "https://github.com/skyfe79/FrameLoop.git", from: "0.0.1")
+    .package(url: "https://github.com/skyfe79/FrameLoop.git", from: "0.0.2")
 ]
 ```
 
