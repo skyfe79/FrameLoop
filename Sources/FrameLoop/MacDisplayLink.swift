@@ -26,6 +26,9 @@
       }
     }
 
+    /// The minimum time interval between screen refreshes, calculated based on the preferred frames per second.
+    private var minTimeInterval: CFTimeInterval = 0
+
     /// Initializes a new MacDisplayLink with the specified frame updater.
     /// - Parameter frameUpdater: The frame updater to be called with each screen refresh.
     public required init(frameUpdater: FrameUpdater) {
@@ -40,6 +43,7 @@
     /// Configures the display link with an output handler to process screen updates.
     private func configureDisplayLink() {
       guard let dl = displayLink else { return }
+      minTimeInterval = 1.0 / Double(preferredFramesPerSecond)
       CVDisplayLinkSetOutputHandler(dl) { [weak self] displayLink, inNow, inOutputTime, _, _ -> CVReturn in
         self?.handleDisplayLink(displayLink, inNow: inNow, inOutputTime: inOutputTime)
         return kCVReturnSuccess
@@ -66,9 +70,11 @@
     public func handleDisplayLink(_: CVDisplayLink, inNow _: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>) {
       let currentTime = CVTimeStampToSeconds(inOutputTime)
       let deltaTime = currentTime - lastUpdateTime
-      lastUpdateTime = currentTime
-      let actualFPS: Double = deltaTime > 0 ? 1.0 / deltaTime : 0
-      frameUpdater?.update(fps: actualFPS, deltaTime: deltaTime)
+      if deltaTime >= minTimeInterval {
+        lastUpdateTime = currentTime
+        let actualFPS: Double = deltaTime > 0 ? 1.0 / deltaTime : 0
+        frameUpdater?.update(fps: actualFPS, deltaTime: deltaTime)
+      }
     }
 
     /// Converts a CVTimeStamp to seconds.
