@@ -10,7 +10,7 @@ public final class FrameUpdater {
   /// The callback to be invoked on frame updates.
   internal var onFrameUpdate: FrameUpdateHandler?
 
-  /// Invokes the `onFrame` callback with the provided fps and deltaTime.
+  /// Invokes the `onFrameUpdate` callback with the provided fps and deltaTime.
   @objc func update(fps: Double, deltaTime: Double) {
     onFrameUpdate?(fps, deltaTime)
   }
